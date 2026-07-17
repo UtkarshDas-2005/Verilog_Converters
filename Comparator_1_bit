@@ -1,0 +1,61 @@
+//==================================================
+// Comparator (1-Bit) - Verilog HDL
+//==================================================
+
+module comparator (
+    input  A,
+    input  B,
+    output A_greater_B,
+    output A_equal_B,
+    output A_less_B
+);
+
+assign A_greater_B = A & ~B;
+assign A_equal_B   = ~(A ^ B);
+assign A_less_B    = ~A & B;
+
+endmodule
+
+
+//==================================================
+// Testbench for 1-Bit Comparator
+//==================================================
+
+`timescale 1ns/1ps
+
+module comparator_tb;
+
+reg A, B;
+
+wire A_greater_B;
+wire A_equal_B;
+wire A_less_B;
+
+comparator uut (
+    .A(A),
+    .B(B),
+    .A_greater_B(A_greater_B),
+    .A_equal_B(A_equal_B),
+    .A_less_B(A_less_B)
+);
+
+initial begin
+    $display("A B | Greater Equal Less");
+    $display("--------------------------");
+
+    A = 0; B = 0; #10;
+    $display("%b %b |    %b      %b     %b", A, B, A_greater_B, A_equal_B, A_less_B);
+
+    A = 0; B = 1; #10;
+    $display("%b %b |    %b      %b     %b", A, B, A_greater_B, A_equal_B, A_less_B);
+
+    A = 1; B = 0; #10;
+    $display("%b %b |    %b      %b     %b", A, B, A_greater_B, A_equal_B, A_less_B);
+
+    A = 1; B = 1; #10;
+    $display("%b %b |    %b      %b     %b", A, B, A_greater_B, A_equal_B, A_less_B);
+
+    $finish;
+end
+
+endmodule
